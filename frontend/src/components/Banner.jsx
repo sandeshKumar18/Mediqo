@@ -1,9 +1,11 @@
-import React from "react";
+import React , {useContext} from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
 const Banner = () => {
   const navigate = useNavigate();
+  const { token } = useContext(AppContext);
 
   return (
     <div
@@ -34,26 +36,51 @@ const Banner = () => {
           With 100+ Trusted Doctors
         </h1>
 
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => {
-              navigate("/login");
-              scrollTo(0, 0);
-            }}
-            className="inline-flex items-center bg-white text-blue-700 text-[10px] sm:text-xs md:text-sm font-semibold px-3 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 whitespace-nowrap"
-          >
-            Create Account
-          </button>
-          <button
-            onClick={() => {
-              navigate("/login");
-              scrollTo(0, 0);
-            }}
-            className="inline-flex items-center bg-transparent text-white border border-white/50 text-[10px] sm:text-xs md:text-sm font-semibold px-3 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-full hover:bg-white/10 hover:border-white active:scale-95 transition-all duration-200 whitespace-nowrap"
-          >
-            Login
-          </button>
-        </div>
+        
+        {token ? (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                navigate("/doctors");
+                scrollTo(0, 0);
+              }}
+              className="inline-flex items-center bg-white text-blue-700 text-[10px] sm:text-xs md:text-sm font-semibold px-3 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 whitespace-nowrap"
+            >
+              Book Your Slot
+            </button>
+            <button
+              onClick={() => {
+                navigate("/my-appointments");
+                scrollTo(0, 0);
+              }}
+              className="inline-flex items-center bg-transparent text-white border border-white/50 text-[10px] sm:text-xs md:text-sm font-semibold px-3 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-full hover:bg-white/10 hover:border-white active:scale-95 transition-all duration-200 whitespace-nowrap"
+            >
+              Explore your Appointments
+            </button>
+          </div>
+        
+            ) : (
+              <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                navigate("/login");
+                scrollTo(0, 0);
+              }}
+              className="inline-flex items-center bg-white text-blue-700 text-[10px] sm:text-xs md:text-sm font-semibold px-3 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-full shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 whitespace-nowrap"
+            >
+              Create Account
+            </button>
+            <button
+              onClick={() => {
+                navigate("/login");
+                scrollTo(0, 0);
+              }}
+              className="inline-flex items-center bg-transparent text-white border border-white/50 text-[10px] sm:text-xs md:text-sm font-semibold px-3 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-full hover:bg-white/10 hover:border-white active:scale-95 transition-all duration-200 whitespace-nowrap"
+            >
+              Login
+            </button>
+          </div>
+            )}
       </div>
 
       <div className="w-1/2 relative flex items-end justify-end">
