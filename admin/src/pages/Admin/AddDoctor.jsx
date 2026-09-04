@@ -95,7 +95,6 @@ const AddDoctor = () => {
         onSubmit={onSubmitHandler}
         className="bg-white border border-gray-200 rounded-xl p-5 sm:p-7 lg:p-8"
       >
-        {/* Upload Image */}
         <label htmlFor="doc-img" className="block cursor-pointer">
           <div className="flex flex-col sm:flex-row items-center gap-4 border-2 border-dashed border-gray-200 rounded-xl p-6 sm:p-7 bg-gray-50 hover:border-gray-300 hover:bg-gray-100 transition-colors">
             {docImg ? (
@@ -129,7 +128,6 @@ const AddDoctor = () => {
           onChange={handleImageChange}
         />
 
-        {/* Personal Details */}
         <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mt-7 mb-4 pt-5 border-t border-gray-100">
           Personal details
         </p>
@@ -207,7 +205,6 @@ const AddDoctor = () => {
           </div>
         </div>
 
-        {/* Professional Info */}
         <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mt-7 mb-4 pt-5 border-t border-gray-100">
           Professional info
         </p>
@@ -225,12 +222,31 @@ const AddDoctor = () => {
               onChange={(e) => setSpeciality(e.target.value)}
               className="text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 outline-none focus:border-gray-400 focus:ring-2 focus:ring-gray-100 transition w-full appearance-none cursor-pointer"
             >
-              <option value="General physician">General Physician</option>
+              <option value="General Physician">General Physician</option>
               <option value="Gynecologist">Gynecologist</option>
               <option value="Dermatologist">Dermatologist</option>
               <option value="Pediatrician">Pediatrician</option>
               <option value="Neurologist">Neurologist</option>
               <option value="Gastroenterologist">Gastroenterologist</option>
+
+              <option value="Cardiologist">Cardiologist</option>
+              <option value="Orthopedic">Orthopedic</option>
+              <option value="Psychologist">Psychologist</option>
+              <option value="Dentist">Dentist</option>
+              <option value="Neurosurgeon">Neurosurgeon</option>
+              <option value="General Surgeon">General Surgeon</option>
+              <option value="Plastic Surgeon">Plastic Surgeon</option>
+              <option value="Heart & Chest Surgeon">Heart & Chest Surgeon</option>
+              <option value="Radiologist">Radiologist</option>
+              <option value="Pathologist">Pathologist</option>
+              <option value="Allergist">Allergist</option>
+              <option value="Infectious Disease Specialist">Infectious Disease Specialist</option>
+              <option value="Physiotherapist">Physiotherapist</option>
+              <option value="Dietitian / Nutritionist">Nutritionist</option>
+              <option value="Ayurvedic Doctor">Ayurvedic Doctor</option>
+              <option value="Homeopathic Doctor">Homeopathic Doctor</option>
+              <option value="Psychiatrist">Psychiatrist</option>
+
             </select>
           </div>
 
