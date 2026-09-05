@@ -363,7 +363,6 @@ const Doctors = () => {
 
                 {displayedDoctors.map((item) => {
 
-                  const isFavorite = favorites.includes(item._id);
 
                   return (
                     <div
