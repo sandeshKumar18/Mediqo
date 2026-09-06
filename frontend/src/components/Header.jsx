@@ -4,7 +4,7 @@ import { assets } from "../assets/assets";
 const Header = () => {
   return (
     <section className="mx-4 sm:mx-6 lg:mx-10 mt-4">
-      <div className="bg-gradient-to-r from-red-600 to-pink-500 rounded-3xl overflow-hidden flex flex-col-reverse md:flex-row items-center min-h-[520px] md:min-h-[480px]">
+      <div className="bg-gradient-to-r from-blue-400 to-brown-400 rounded-3xl overflow-hidden flex flex-col-reverse md:flex-row items-center min-h-[520px] md:min-h-[480px]">
         {/* Left Content */}
         <div className="w-full md:w-1/2 flex flex-col justify-center px-6 sm:px-8 lg:px-14 py-10 md:py-0 text-center md:text-left">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">

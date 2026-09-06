@@ -285,14 +285,10 @@ const Contact = () => {
 
       <section className="relative px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-12">
         
-        <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-indigo-100/60 blur-3xl pointer-events-none" />
-
-        <div className="absolute top-32 -left-32 w-72 h-72 rounded-full bg-blue-100/40 blur-3xl pointer-events-none" />
-
         <div className="relative max-w-7xl mx-auto">
           <div className="max-w-3xl mx-auto text-center">
            
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 rounded-full border border-indigo-100 bg-indigo-50 text-indigo-600 text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 rounded-full border border-indigo-100 bg-yellow-50 text-indigo-600 text-xs font-semibold">
               <span
                 className={`w-2 h-2 rounded-full ${
                   isOnline ? "bg-green-500 animate-pulse" : "bg-gray-400"
@@ -308,7 +304,7 @@ const Contact = () => {
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-gray-900 leading-[1.08]">
               We're here to help you
-              <span className="block text-indigo-600 mt-1">
+              <span className="block text-yellow-600 mt-1">
                 connect with better healthcare.
               </span>
             </h1>

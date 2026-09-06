@@ -14,7 +14,7 @@ const Banner = () => {
              mx-4 sm:mx-6 lg:mx-10 mt-4"
       style={{
         background:
-          "linear-gradient(135deg, #721121 0%, #721121 55%, #721121 100%)",
+          "linear-gradient(135deg, #00A6A6 0%, #BBDEF0 55%, #F08700 100%)",
       }}
     >
       {/* Radial glow */}

@@ -96,7 +96,6 @@ const addDoctor = async (req, res) => {
     });
   } catch (error) {
     console.log("Not added doctor");
-  
 
     res.json({
       success: false,
@@ -199,7 +198,6 @@ const getDashData = async (req, res) => {
   }
 };
 
-
 const removeDoctor = async (req, res) => {
   try {
     const { docId } = req.body;
@@ -226,7 +224,6 @@ const removeDoctor = async (req, res) => {
       success: true,
       message: "Doctor removed successfully",
     });
-
   } catch (error) {
     console.log(error);
 
@@ -255,7 +252,7 @@ const cancelAppointment = async (req, res) => {
       },
       {
         returnDocument: "after",
-      }
+      },
     );
 
     if (!appointmentData) {
@@ -269,7 +266,6 @@ const cancelAppointment = async (req, res) => {
       success: true,
       message: "Appointment cancelled successfully",
     });
-
   } catch (error) {
     console.log(error);
 
@@ -280,4 +276,73 @@ const cancelAppointment = async (req, res) => {
   }
 };
 
-export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin, getDashData,removeDoctor , cancelAppointment};
+const updateDoctor = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const doctor = await doctorModel.findById(id);
+
+    if (!doctor) {
+      return res.json({
+        success: false,
+        message: "Doctor not found",
+      });
+    }
+
+    doctor.name = req.body.name ?? doctor.name;
+    doctor.degree = req.body.degree ?? doctor.degree;
+    doctor.speciality = req.body.speciality ?? doctor.speciality;
+    doctor.about = req.body.about ?? doctor.about;
+    doctor.experience = req.body.experience ?? doctor.experience;
+    doctor.fees = req.body.fees ?? doctor.fees;
+
+    if (req.body.available !== undefined) {
+      doctor.available =
+        req.body.available === true || req.body.available === "true";
+    }
+
+    if (req.file) {
+      try {
+        const result = await cloudinary.uploader.upload(req.file.path, {
+          folder: "doctors",
+          resource_type: "image",
+        });
+
+        doctor.image = result.secure_url;
+      } catch (uploadError) {
+        console.log("Cloudinary upload error:", uploadError);
+
+        return res.json({
+          success: false,
+          message: "Image upload failed",
+        });
+      }
+    }
+
+    await doctor.save();
+
+    return res.json({
+      success: true,
+      message: "Doctor updated successfully",
+      doctor,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export {
+  addDoctor,
+  loginAdmin,
+  allDoctors,
+  appointmentsAdmin,
+  getDashData,
+  removeDoctor,
+  cancelAppointment,
+  updateDoctor,
+};

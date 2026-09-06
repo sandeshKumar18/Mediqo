@@ -136,6 +136,35 @@ const AdminContextProvider = (props) => {
     }
   };
 
+
+  
+const updateDoctor = async (docId, formData) => {
+  try {
+    const { data } = await axios.put(
+      backendUrl + `/api/admin/update-doctor/${docId}`,
+      formData,
+      {
+        headers: {
+          aToken,
+        },
+      }
+    );
+
+    if (data.success) {
+      toast.success(data.message);
+      getAllDoctors();
+      return true;
+    } else {
+      toast.error(data.message);
+      return false;
+    }
+  } catch (error) {
+    console.log("Update doctor error:", error);
+    toast.error(error.response?.data?.message || error.message);
+    return false;
+  }
+};
+
   const value = {
     aToken,
     setAToken,
@@ -147,6 +176,7 @@ const AdminContextProvider = (props) => {
     getAllDoctors,
     changeAvailability,
     removeDoctor,
+    updateDoctor,
 
     appointments,
     setAppointments,
@@ -163,5 +193,9 @@ const AdminContextProvider = (props) => {
     </AdminContext.Provider>
   );
 };
+
+
+
+
 
 export default AdminContextProvider;

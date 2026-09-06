@@ -5,6 +5,9 @@ import React, {
   useState,
 } from "react";
 
+import axios from 'axios';
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 import { AdminContext } from "../../context/AdminContext";
 
 import {
@@ -34,6 +37,7 @@ const DoctorsList = () => {
     getAllDoctors,
     changeAvailability,
     removeDoctor,
+    updateDoctor,
   } = useContext(AdminContext);
 
   
@@ -215,31 +219,40 @@ const DoctorsList = () => {
     }));
   };
 
-  /* =====================================================
-     SAVE EDIT FORM
-     
-     NOTE:
-     Your current AdminContext does not expose an
-     updateDoctor function, so this UI is prepared
-     for the API connection.
-  ===================================================== */
 
-  const handleUpdateDoctor = async (e) => {
-    e.preventDefault();
 
-    if (!selectedDoctor) return;
+const handleUpdateDoctor = async (e) => {
+  e.preventDefault();
 
-    console.log("Doctor update data:", {
-      doctorId: selectedDoctor._id,
-      ...editForm,
-    });
+  if (!selectedDoctor) return;
 
-    alert(
-      "Edit form is ready. Connect your updateDoctor API in AdminContext to save these changes."
+  try {
+    const formData = new FormData();
+
+    formData.append("name", editForm.name);
+    formData.append("degree", editForm.degree);
+    formData.append("speciality", editForm.speciality);
+    formData.append("about", editForm.about);
+    formData.append("experience", editForm.experience);
+    formData.append("fees", editForm.fees);
+    formData.append("available", editForm.available);
+
+    if (editForm.image) {
+      formData.append("image", editForm.image);
+    }
+
+    const success = await updateDoctor(
+      selectedDoctor._id,
+      formData
     );
 
-    closeEditModal();
-  };
+    if (success) {
+      closeEditModal();
+    }
+  } catch (error) {
+    console.log("Handle update doctor error:", error);
+  }
+};
 
  
   const filteredDoctors = useMemo(() => {

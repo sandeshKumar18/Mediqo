@@ -4,12 +4,18 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { User, ChevronDown, Calendar, LogOut, Menu, X } from "lucide-react";
 
+
+
 const NAV_LINKS = [
   { to: "/", label: "Home" },
-  { to: "/doctors", label: "All Doctors" },
-  { to: "/about", label: "About" },
+  { to: "/doctors", label: "Doctors" },
+  { to: "/services", label: "Services" },
   { to: "/contact", label: "Contact" },
 ];
+
+
+
+
 
 const Navbar = () => {
   const navigate = useNavigate();

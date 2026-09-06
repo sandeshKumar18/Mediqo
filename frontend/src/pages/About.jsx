@@ -122,7 +122,7 @@ const About = () => {
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-gray-900 leading-[1.08]">
                 Healthcare that
-                <span className="block text-indigo-600">
+                <span className="block text-yellow-600">
                   puts people first.
                 </span>
               </h1>
@@ -136,7 +136,7 @@ const About = () => {
               <div className="flex flex-wrap gap-3 mt-8">
                 <a
                   href="/doctors"
-                  className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-xl text-sm font-medium hover:bg-indigo-700 transition"
+                  className="inline-flex items-center gap-2 bg-yellow-600 text-white px-6 py-3 rounded-xl text-sm font-medium"
                 >
                   Find a Doctor
                   <ArrowRight size={17} />
@@ -199,7 +199,7 @@ const About = () => {
 
               <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900 leading-tight">
                 How Mediqo
-                <span className="text-indigo-600"> started.</span>
+                <span className="text-yellow-600"> started.</span>
               </h2>
 
               <div className="mt-6 space-y-5 text-gray-500 leading-7 text-sm md:text-base">
@@ -236,7 +236,7 @@ const About = () => {
               <div className="space-y-10">
 
                 <div className="relative">
-                  <div className="absolute -left-[25px] md:-left-[33px] top-1 w-6 h-6 rounded-full bg-indigo-600 border-4 border-indigo-100"></div>
+                  <div className="absolute -left-[25px] md:-left-[33px] top-1 w-6 h-6 rounded-full bg-yellow-600 border-4 border-indigo-100"></div>
 
                   <p className="text-xs font-semibold text-indigo-500 uppercase tracking-wider">
                     The Beginning
@@ -253,7 +253,7 @@ const About = () => {
                 </div>
 
                 <div className="relative">
-                  <div className="absolute -left-[25px] md:-left-[33px] top-1 w-6 h-6 rounded-full bg-indigo-600 border-4 border-indigo-100"></div>
+                  <div className="absolute -left-[25px] md:-left-[33px] top-1 w-6 h-6 rounded-full bg-yellow-600 border-4 border-indigo-100"></div>
 
                   <p className="text-xs font-semibold text-indigo-500 uppercase tracking-wider">
                     Building Mediqo
@@ -270,7 +270,7 @@ const About = () => {
                 </div>
 
                 <div className="relative">
-                  <div className="absolute -left-[25px] md:-left-[33px] top-1 w-6 h-6 rounded-full bg-indigo-600 border-4 border-indigo-100"></div>
+                  <div className="absolute -left-[25px] md:-left-[33px] top-1 w-6 h-6 rounded-full bg-yellow-600 border-4 border-indigo-100"></div>
 
                   <p className="text-xs font-semibold text-indigo-500 uppercase tracking-wider">
                     Today
@@ -305,7 +305,7 @@ const About = () => {
 
             <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900">
               Everything you need for a
-              <span className="text-indigo-600"> simpler healthcare journey.</span>
+              <span className="text-yellow-600"> simpler healthcare journey.</span>
             </h2>
 
             <p className="text-gray-500 mt-4 leading-7">
@@ -323,7 +323,7 @@ const About = () => {
                 <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-600 transition-colors duration-300">
                   <Icon
                     size={22}
-                    className="text-indigo-600 group-hover:text-white transition-colors duration-300"
+                    className="text-red-600 group-hover:text-white transition-colors duration-300"
                   />
                 </div>
 
@@ -348,8 +348,8 @@ const About = () => {
 
           <div className="grid md:grid-cols-2 gap-5">
 
-            <div className="rounded-[2rem] bg-indigo-600 text-white p-8 md:p-12">
-              <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center mb-6">
+            <div className="rounded-[2rem] bg-gray-50 border border-gray-100 p-8 md:p-12">
+              <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center mb-6">
                 <HeartPulse size={24} />
               </div>
 
@@ -361,7 +361,7 @@ const About = () => {
                 Making healthcare easier to access.
               </h2>
 
-              <p className="text-indigo-100 leading-7 text-sm md:text-base mt-5">
+              <p className="text-gray-500 leading-7 text-sm md:text-base mt-5">
                 Our mission is to simplify the healthcare journey by connecting
                 patients with trusted healthcare professionals through
                 technology that is intuitive, reliable, and accessible.
@@ -404,7 +404,7 @@ const About = () => {
 
             <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900">
               Healthcare in
-              <span className="text-indigo-600"> four simple steps.</span>
+              <span className="text-yellow-600"> four simple steps.</span>
             </h2>
 
             <p className="text-gray-500 mt-4 leading-7">
@@ -451,7 +451,7 @@ const About = () => {
 
               <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900 leading-tight">
                 The principles behind
-                <span className="text-indigo-600"> everything we do.</span>
+                <span className="text-yellow-600"> everything we do.</span>
               </h2>
 
               <p className="text-gray-500 mt-5 leading-7 text-sm md:text-base">
@@ -499,7 +499,7 @@ const About = () => {
                 <p className="text-3xl md:text-4xl font-semibold">
                   100+
                 </p>
-                <p className="text-sm text-gray-400 mt-2">
+                <p className="text-sm text-yellow-500 mt-2">
                   Healthcare Professionals
                 </p>
               </div>
@@ -508,7 +508,7 @@ const About = () => {
                 <p className="text-3xl md:text-4xl font-semibold">
                   1K+
                 </p>
-                <p className="text-sm text-gray-400 mt-2">
+                <p className="text-sm text-yellow-500 mt-2">
                   Patients Connected
                 </p>
               </div>
@@ -517,7 +517,7 @@ const About = () => {
                 <p className="text-3xl md:text-4xl font-semibold">
                   20+
                 </p>
-                <p className="text-sm text-gray-400 mt-2">
+                <p className="text-sm text-yellow-500 mt-2">
                   Medical Specialties
                 </p>
               </div>
@@ -526,7 +526,7 @@ const About = () => {
                 <p className="text-3xl md:text-4xl font-semibold">
                   24/7
                 </p>
-                <p className="text-sm text-gray-400 mt-2">
+                <p className="text-sm text-yellow-500 mt-2">
                   Digital Accessibility
                 </p>
               </div>
@@ -536,7 +536,7 @@ const About = () => {
           </div>
 
           <p className="text-xs text-gray-400 text-center mt-3">
-            *These stats makes us more confident to help the patients.
+            These stats makes us more confident to help the patients.
           </p>
 
         </div>
@@ -554,7 +554,7 @@ const About = () => {
 
             <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900">
               People building a
-              <span className="text-indigo-600"> better healthcare future.</span>
+              <span className="text-yellow-600"> better healthcare future.</span>
             </h2>
 
             <p className="text-gray-500 mt-4 leading-7">
@@ -606,7 +606,7 @@ const About = () => {
 
               <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900 leading-tight">
                 Designed around what
-                <span className="text-indigo-600"> matters to you.</span>
+                <span className="text-yellow-600"> matters to you.</span>
               </h2>
 
               <p className="text-gray-500 mt-5 leading-7">
@@ -686,26 +686,26 @@ const About = () => {
                 </p>
               </div>
 
-              <div className="bg-gray-900 text-white rounded-3xl p-6 md:p-8 min-h-[180px] flex flex-col justify-end">
+              <div className="bg-gray-300 text-white rounded-3xl p-6 md:p-8 min-h-[180px] flex flex-col justify-end">
                 <Users size={26} className="text-indigo-300 mb-auto" />
 
-                <h3 className="font-semibold">
+                <h3 className="font-semibold text-gray-900">
                   Connected
                 </h3>
 
-                <p className="text-sm text-gray-400 mt-1">
+                <p className="text-sm text-gray-500 mt-1">
                   Patients and healthcare professionals together.
                 </p>
               </div>
 
-              <div className="bg-indigo-600 text-white rounded-3xl p-6 md:p-8 min-h-[180px] flex flex-col justify-end mt-8">
+              <div className="bg-indigo-300 text-black rounded-3xl p-6 md:p-8 min-h-[180px] flex flex-col justify-end mt-8">
                 <HeartPulse size={26} className="text-white mb-auto" />
 
-                <h3 className="font-semibold">
+                <h3 className="font-semibold-700">
                   Patient Focused
                 </h3>
 
-                <p className="text-sm text-indigo-100 mt-1">
+                <p className="text-sm text-black-100 mt-1">
                   Technology built around people.
                 </p>
               </div>

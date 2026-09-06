@@ -7,6 +7,7 @@ import {
   getDashData,
   removeDoctor,
   cancelAppointment,
+  updateDoctor,
 } from "../controllers/adminController.js";
 
 import upload from "../middlewares/multer.js";
@@ -24,6 +25,7 @@ adminRouter.post("/cancel-appointment",authAdmin,cancelAppointment);
 adminRouter.delete("/remove-doctor",authAdmin,removeDoctor);
 adminRouter.get("/appointments", authAdmin, appointmentsAdmin);
 adminRouter.get("/dashboard", authAdmin, getDashData);
+adminRouter.put("/update-doctor/:id",authAdmin,upload.single("image"),updateDoctor);
 
 
 export default adminRouter;
