@@ -12,6 +12,7 @@ import tick_icon from "./tick_icon.svg";
 import appointments_icon from "./appointments_icon.svg";
 import earning_icon from "./earning_icon.svg";
 import patients_icon from "./patients_icon.svg";
+import rupee_icon from "./rupee.png";
 
 export const assets = {
   add_icon,
@@ -28,4 +29,5 @@ export const assets = {
   tick_icon,
   appointments_icon,
   earning_icon,
+  rupee_icon,
 };

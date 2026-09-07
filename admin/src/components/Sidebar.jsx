@@ -13,6 +13,7 @@ const ADMIN_NAV_ITEMS = [
   },
   { to: "/add-doctor", icon: assets.add_icon, label: "Add Doctor" },
   { to: "/doctor-list", icon: assets.people_icon, label: "Doctors List" },
+  { to: "/revenue",icon: assets.rupee_icon,  label: "Revenue"},
 ];
 
 const DOCTOR_NAV_ITEMS = [

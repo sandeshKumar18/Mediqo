@@ -336,6 +336,278 @@ const updateDoctor = async (req, res) => {
   }
 };
 
+const adminRevenue = async (req, res) => {
+  try {
+    const { from, to } = req.query;
+
+    let startTimestamp = 0;
+    let endTimestamp = Date.now();
+
+    if (from) {
+      const start = new Date(`${from}T00:00:00`);
+      startTimestamp = start.getTime();
+
+      if (Number.isNaN(startTimestamp)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid from date",
+        });
+      }
+    }
+
+    if (to) {
+      const end = new Date(`${to}T23:59:59.999`);
+      endTimestamp = end.getTime();
+
+      if (Number.isNaN(endTimestamp)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid to date",
+        });
+      }
+    }
+
+    if (startTimestamp > endTimestamp) {
+      return res.status(400).json({
+        success: false,
+        message: "From date cannot be greater than to date",
+      });
+    }
+
+    const appointments = await appointmentModel
+      .find({
+        date: {
+          $gte: startTimestamp,
+          $lte: endTimestamp,
+        },
+      })
+      .lean();
+
+    
+
+    const totalAppointments = appointments.length;
+
+    const patientIds = new Set();
+    const doctorIds = new Set();
+
+    appointments.forEach((appointment) => {
+      if (appointment.userId) {
+        patientIds.add(String(appointment.userId));
+      }
+
+      if (appointment.docId) {
+        doctorIds.add(String(appointment.docId));
+      }
+    });
+
+    const totalPatients = patientIds.size;
+    const totalDoctors = doctorIds.size;
+
+    
+    let totalRevenue = 0;
+    let onlineRevenue = 0;
+    let cashRevenue = 0;
+    let pendingAmount = 0;
+
+    appointments.forEach((appointment) => {
+      const amount = Number(appointment.amount) || 0;
+
+      if (appointment.payment === true) {
+        onlineRevenue += amount;
+        totalRevenue += amount;
+
+        return;
+      }
+
+
+      if (
+        appointment.payment === false &&
+        appointment.isCompleted === true &&
+        appointment.cancelled === false
+      ) {
+        cashRevenue += amount;
+        totalRevenue += amount;
+
+        return;
+      }
+
+      if (
+        appointment.payment === false &&
+        appointment.isCompleted === false &&
+        appointment.cancelled === false
+      ) {
+        pendingAmount += amount;
+      }
+    });
+
+    
+    const doctorMap = new Map();
+
+    appointments.forEach((appointment) => {
+      const doctorId = appointment.docId
+        ? String(appointment.docId)
+        : null;
+
+      if (!doctorId) return;
+
+      if (!doctorMap.has(doctorId)) {
+        const doctorName =
+          appointment.docData?.name ||
+          appointment.docData?.doctorName ||
+          "Unknown Doctor";
+
+        const speciality =
+          appointment.docData?.speciality ||
+          appointment.docData?.specialty ||
+          "";
+
+        doctorMap.set(doctorId, {
+          id: doctorId,
+          name: doctorName,
+          speciality,
+          appointments: 0,
+          patients: new Set(),
+          revenue: 0,
+        });
+      }
+
+      const doctor = doctorMap.get(doctorId);
+
+      doctor.appointments += 1;
+
+      if (appointment.userId) {
+        doctor.patients.add(
+          String(appointment.userId)
+        );
+      }
+
+      const amount = Number(appointment.amount) || 0;
+
+      if (appointment.payment === true) {
+        doctor.revenue += amount;
+      } else if (
+        appointment.payment === false &&
+        appointment.isCompleted === true &&
+        appointment.cancelled === false
+      ) {
+        doctor.revenue += amount;
+      }
+    });
+
+    const doctors = Array.from(
+      doctorMap.values()
+    ).map((doctor) => ({
+      id: doctor.id,
+      name: doctor.name,
+      speciality: doctor.speciality,
+      appointments: doctor.appointments,
+      patients: doctor.patients.size,
+      revenue: doctor.revenue,
+    }));
+
+    const chartMap = new Map();
+
+    appointments.forEach((appointment) => {
+      const timestamp = Number(appointment.date);
+
+      if (!timestamp) return;
+
+      const date = new Date(timestamp);
+
+      if (Number.isNaN(date.getTime())) return;
+
+      const year = date.getFullYear();
+
+      const month = String(
+        date.getMonth() + 1
+      ).padStart(2, "0");
+
+      const day = String(
+        date.getDate()
+      ).padStart(2, "0");
+
+      const key = `${year}-${month}-${day}`;
+
+      const label = date.toLocaleDateString(
+        "en-IN",
+        {
+          day: "2-digit",
+          month: "short",
+        }
+      );
+
+      let revenue = 0;
+
+      const amount =
+        Number(appointment.amount) || 0;
+
+      if (appointment.payment === true) {
+        revenue = amount;
+      }
+
+      if (
+        appointment.payment === false &&
+        appointment.isCompleted === true &&
+        appointment.cancelled === false
+      ) {
+        revenue = amount;
+      }
+
+      if (!chartMap.has(key)) {
+        chartMap.set(key, {
+          label,
+          revenue: 0,
+        });
+      }
+
+      chartMap.get(key).revenue += revenue;
+    });
+
+    const chart = Array.from(
+      chartMap.entries()
+    )
+      .sort((a, b) =>
+        a[0].localeCompare(b[0])
+      )
+      .map(([, value]) => value);
+
+    return res.status(200).json({
+      success: true,
+
+      data: {
+        totalRevenue,
+        totalAppointments,
+        totalPatients,
+        totalDoctors,
+
+        onlineRevenue,
+        cashRevenue,
+
+        pendingAmount,
+
+        refundedAmount: 0,
+        revenueGrowth: 0,
+
+        chart,
+
+        doctors,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Admin Revenue Error:",
+      error
+    );
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to calculate revenue",
+      error: error.message,
+    });
+  }
+};
+
+
 export {
   addDoctor,
   loginAdmin,
@@ -345,4 +617,5 @@ export {
   removeDoctor,
   cancelAppointment,
   updateDoctor,
+  adminRevenue,
 };
