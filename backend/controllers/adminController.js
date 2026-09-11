@@ -5,8 +5,47 @@ import jwt from "jsonwebtoken";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 import userModel from "../models/userModel.js";
+import generalRequestModel from "../models/generalRequestModel.js";
 
-// API for adding doctor
+
+
+const emitGeneralRequestUpdate = (
+  req,
+  requestData,
+  notification = null,
+) => {
+  const io = req.app.get("io");
+
+  if (!io || !requestData) return;
+
+  const updateData = {
+    requestId: requestData._id,
+    department: requestData.department,
+    queueNumber: requestData.queueNumber,
+    status: requestData.status,
+    assignedDoctor: requestData.assignedDoctor,
+  };
+
+  io.emit(
+    "generalRequestUpdated",
+    updateData,
+  );
+
+  if (
+    notification &&
+    requestData.user
+  ) {
+    io.to(
+      `user:${requestData.user.toString()}`,
+    ).emit(
+      "generalRequestNotification",
+      notification,
+    );
+  }
+};
+
+
+
 const addDoctor = async (req, res) => {
   try {
     const {
@@ -26,7 +65,6 @@ const addDoctor = async (req, res) => {
     // console.log("This is body");
     // console.log(req.body);
 
-    // checking for all data to add doctor
     if (
       !name ||
       !email ||
@@ -46,7 +84,6 @@ const addDoctor = async (req, res) => {
     }
 
     //console.log("Work in progress");
-    // validating email format
     if (!validator.isEmail(email)) {
       return res.json({
         success: false,
@@ -65,7 +102,7 @@ const addDoctor = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // upload image to cloudinary
-    //console.log("Work in progress");
+    //console.log("Work in progress, print Hoja yarr");
     const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
       resource_type: "image",
     });
@@ -104,7 +141,7 @@ const addDoctor = async (req, res) => {
   }
 };
 
-// API For admin Login
+// admin Login
 const loginAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -134,7 +171,7 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-// API to get all doctors list for admin panel
+// get all doctors
 const allDoctors = async (req, res) => {
   try {
     const doctors = await doctorModel.find({}).select("-password");
@@ -148,7 +185,7 @@ const allDoctors = async (req, res) => {
   }
 };
 
-// API to get all appointments list
+// all appointments list
 
 const appointmentsAdmin = async (req, res) => {
   try {
@@ -608,6 +645,346 @@ const adminRevenue = async (req, res) => {
 };
 
 
+// to get today's General Requests for admin
+const getGeneralRequests = async (req, res) => {
+  try {
+    const { department, status } = req.query;
+
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(startOfDay);
+    endOfDay.setDate(endOfDay.getDate() + 1);
+
+    const filter = {
+      createdAt: {
+        $gte: startOfDay,
+        $lt: endOfDay,
+      },
+
+      paymentStatus: "paid",
+
+      queueNumber: {
+        $gt: 0,
+      },
+    };
+
+    if (department) {
+      filter.department = department.trim();
+    }
+
+    if (status) {
+      filter.status = status;
+    }
+
+    const requests = await generalRequestModel
+      .find(filter)
+      .populate("user", "name email phone")
+      .sort({
+        queueNumber: 1,
+      })
+      .lean();
+
+    return res.json({
+      success: true,
+      count: requests.length,
+      requests,
+    });
+  } catch (error) {
+    console.log("Get General Requests Error:", error);
+
+    return res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+// assign an offline doctor to a General Request
+const assignGeneralRequestDoctor = async (req, res) => {
+  try {
+    const { requestId, doctorName } = req.body;
+
+    
+    if (!requestId || !doctorName) {
+      return res.json({
+        success: false,
+        message: "Request ID and doctor name are required",
+      });
+    }
+
+    const cleanDoctorName = doctorName.trim();
+
+    if (!cleanDoctorName) {
+      return res.json({
+        success: false,
+        message: "Doctor name cannot be empty",
+      });
+    }
+
+    
+    const requestData =
+      await generalRequestModel.findById(requestId);
+
+    if (!requestData) {
+      return res.json({
+        success: false,
+        message: "General Request not found",
+      });
+    }
+
+    
+    if (requestData.paymentStatus !== "paid") {
+      return res.json({
+        success: false,
+        message: "This request has not been paid",
+      });
+    }
+
+    if (requestData.status !== "waiting") {
+      return res.json({
+        success: false,
+        message: `Request cannot be assigned because its current status is "${requestData.status}"`,
+      });
+    }
+
+    
+    requestData.assignedDoctor = cleanDoctorName;
+
+    requestData.status = "accepted";
+
+    requestData.acceptedAt = new Date();
+
+    await requestData.save();
+    emitGeneralRequestUpdate(req,requestData,{
+        type: "success",
+        title: "Request Accepted",
+        message: `${cleanDoctorName} has been assigned to your consultation.`,
+      },
+    );
+
+    
+    return res.json({
+      success: true,
+      message: "General Request accepted and doctor assigned",
+      request: {
+        _id: requestData._id,
+        patientName: requestData.patientName,
+        department: requestData.department,
+        queueNumber: requestData.queueNumber,
+        assignedDoctor: requestData.assignedDoctor,
+        paymentStatus: requestData.paymentStatus,
+        status: requestData.status,
+        acceptedAt: requestData.acceptedAt,
+      },
+    });
+  } catch (error) {
+    console.log(
+      "Assign General Request Doctor Error:",
+      error,
+    );
+
+    return res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+// start consultation for a General Request
+const startGeneralRequestConsultation = async (req, res) => {
+  try {
+    const { requestId } = req.body;
+
+    
+    if (!requestId) {
+      return res.json({
+        success: false,
+        message: "Request ID is required",
+      });
+    }
+
+    const requestData =
+      await generalRequestModel.findById(requestId);
+
+    if (!requestData) {
+      return res.json({
+        success: false,
+        message: "General Request not found",
+      });
+    }
+
+    if (requestData.paymentStatus !== "paid") {
+      return res.json({
+        success: false,
+        message: "This request has not been paid",
+      });
+    }
+
+    
+    if (!requestData.assignedDoctor) {
+      return res.json({
+        success: false,
+        message: "Please assign a doctor before starting consultation",
+      });
+    }
+
+    
+    if (requestData.status !== "accepted") {
+      return res.json({
+        success: false,
+        message: `Consultation cannot be started because request status is "${requestData.status}"`,
+      });
+    }
+
+    
+    const currentRequest =
+      await generalRequestModel.findOne({
+        department: requestData.department,
+
+        status: "in_progress",
+
+        paymentStatus: "paid",
+
+        queueNumber: {
+          $gt: 0,
+        },
+      });
+
+    if (currentRequest) {
+      return res.json({
+        success: false,
+        message:
+          `Another consultation is already in progress for ` +
+          `${requestData.department} (Queue #${currentRequest.queueNumber})`,
+      });
+    }
+
+    
+    requestData.status = "in_progress";
+
+    requestData.startedAt = new Date();
+
+    await requestData.save();
+    emitGeneralRequestUpdate(req,requestData,{
+      type: "success",
+      title: "Consultation Started",
+      message: `${requestData.assignedDoctor} is now ready for your consultation.`,
+    },
+    );
+
+    
+    return res.json({
+      success: true,
+      message: "Consultation started successfully",
+      request: {
+        _id: requestData._id,
+        patientName: requestData.patientName,
+        department: requestData.department,
+        queueNumber: requestData.queueNumber,
+        assignedDoctor: requestData.assignedDoctor,
+        paymentStatus: requestData.paymentStatus,
+        status: requestData.status,
+        startedAt: requestData.startedAt,
+      },
+    });
+  } catch (error) {
+    console.log(
+      "Start General Request Consultation Error:",
+      error
+    );
+
+    return res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+// complete a General Request consultation
+const completeGeneralRequestConsultation = async (req, res) => {
+  try {
+    const { requestId } = req.body;
+
+    
+    if (!requestId) {
+      return res.json({
+        success: false,
+        message: "Request ID is required",
+      });
+    }
+
+    const requestData =
+      await generalRequestModel.findById(requestId);
+
+    if (!requestData) {
+      return res.json({
+        success: false,
+        message: "General Request not found",
+      });
+    }
+
+    
+    if (requestData.status !== "in_progress") {
+      return res.json({
+        success: false,
+        message:
+          `Consultation cannot be completed because request status is "${requestData.status}"`,
+      });
+    }
+
+    
+    requestData.status = "completed";
+
+    requestData.completedAt = new Date();
+
+    await requestData.save();
+    emitGeneralRequestUpdate(req,requestData,{
+      type: "info",
+      title: "Consultation Completed",
+      message: "Your consultation has been completed.",
+    },);
+
+    
+    return res.json({
+      success: true,
+      message: "Consultation completed successfully",
+      request: {
+        _id: requestData._id,
+        patientName: requestData.patientName,
+        department: requestData.department,
+        queueNumber: requestData.queueNumber,
+        assignedDoctor: requestData.assignedDoctor,
+        paymentStatus: requestData.paymentStatus,
+        status: requestData.status,
+        startedAt: requestData.startedAt,
+        completedAt: requestData.completedAt,
+      },
+    });
+  } catch (error) {
+    console.log(
+      "Complete General Request Consultation Error:",
+      error
+    );
+
+    return res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+
+
+
+
 export {
   addDoctor,
   loginAdmin,
@@ -618,4 +995,8 @@ export {
   cancelAppointment,
   updateDoctor,
   adminRevenue,
+  getGeneralRequests,
+  assignGeneralRequestDoctor,
+  startGeneralRequestConsultation,
+  completeGeneralRequestConsultation,
 };

@@ -9,6 +9,7 @@ import { User, ChevronDown, Calendar, LogOut, Menu, X } from "lucide-react";
 const NAV_LINKS = [
   { to: "/", label: "Home" },
   { to: "/doctors", label: "Doctors" },
+  {to: "/general-request", label : "General-Request"},
   { to: "/services", label: "Services" },
   { to: "/contact", label: "Contact" },
 ];
@@ -143,7 +144,6 @@ const Navbar = () => {
                 )}
               </button>
 
-              {/* Dropdown — only when logged in */}
               {token && (
                 <div
                   className={`absolute top-full right-0 mt-3 min-w-[190px] bg-white rounded-xl shadow-lg ring-1 ring-gray-100 z-30 overflow-hidden transition-all duration-200 ${
@@ -189,7 +189,6 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Hamburger — MOBILE ONLY */}
             <button
               className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
               onClick={() => setShowMenu((v) => !v)}
@@ -205,7 +204,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* ── Mobile Backdrop ── */}
       <div
         className={`fixed inset-0 bg-black/30 z-40 md:hidden transition-opacity duration-300 ${
           showMenu
@@ -223,7 +221,6 @@ const Navbar = () => {
           showMenu ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {/* Drawer header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <img className="w-28 sm:w-32" src={assets.logo} alt="Brand logo" />
           <button
@@ -235,7 +232,6 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Drawer nav links */}
         <nav className="flex flex-col gap-1 px-3 py-4 flex-1 overflow-y-auto">
           {NAV_LINKS.map(({ to, label }) => (
             <NavLink
@@ -255,7 +251,6 @@ const Navbar = () => {
           ))}
         </nav>
 
-        {/* Drawer footer: profile or login */}
         <div className="px-5 py-5 border-t border-gray-100">
           {token ? (
             <div className="flex flex-col gap-1">

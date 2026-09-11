@@ -13,6 +13,7 @@ import MyProfile from "./pages/MyProfile";
 import MyAppointments from "./pages/MyAppointments";
 import Appointment from "./pages/Appointment";
 import Services from "./pages/Services";
+import GeneralRequest from "./pages/GeneralRequest";
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/my-appointments" element={<MyAppointments />} />
           <Route path="/appointment/:docId" element={<Appointment />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/general-request" element={<GeneralRequest />} />
         </Routes>
       </div>
 

@@ -49,10 +49,7 @@ const Doctors = () => {
     useState("All Specialties");
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
 
-  /* ---------------------------------------------------------
-     Keep old URL-based specialty routes working.
-     Example: /doctors/Cardiologist
-     --------------------------------------------------------- */
+  
   useEffect(() => {
     if (speciality) {
       const matchingSpecialty = specialties.find(
@@ -67,9 +64,6 @@ const Doctors = () => {
     }
   }, [speciality]);
 
-  /* ---------------------------------------------------------
-     Filter doctors
-     --------------------------------------------------------- */
   const displayedDoctors = useMemo(() => {
     let result = Array.isArray(doctors) ? [...doctors] : [];
 
@@ -102,9 +96,6 @@ const Doctors = () => {
     return result;
   }, [doctors, search, selectedSpecialty, showAvailableOnly]);
 
-  /* ---------------------------------------------------------
-     Clear all filters
-     --------------------------------------------------------- */
   const clearFilters = () => {
     setSearch("");
     setSelectedSpecialty("All Specialties");
@@ -125,9 +116,7 @@ const Doctors = () => {
     <div className="min-h-screen bg-gray-50/60 px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       <div className="max-w-7xl mx-auto">
 
-        {/* =====================================================
-            PAGE HEADER
-        ===================================================== */}
+        
         <div className="mb-7 sm:mb-9">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
 
@@ -147,7 +136,6 @@ const Doctors = () => {
               </p>
             </div>
 
-            {/* Doctor count */}
             <div className="bg-white border border-gray-100 shadow-sm rounded-xl px-4 py-3 min-w-[145px]">
               <p className="text-xs text-gray-400">
                 Doctors found
@@ -160,14 +148,11 @@ const Doctors = () => {
           </div>
         </div>
 
-        {/* =====================================================
-            SEARCH + FILTER BAR
-        ===================================================== */}
+        
         <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-3 sm:p-4 mb-6">
 
           <div className="flex flex-col xl:flex-row gap-3">
 
-            {/* Search */}
             <div className="relative flex-1 min-w-0">
               <Search
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
@@ -193,7 +178,6 @@ const Doctors = () => {
               )}
             </div>
 
-            {/* Specialty Dropdown */}
             <div className="relative w-full xl:w-60">
               <SlidersHorizontal
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
@@ -204,7 +188,6 @@ const Doctors = () => {
                 onChange={(e) => {
                   setSelectedSpecialty(e.target.value);
 
-                  // Keep URL clean when filtering from the UI
                   if (speciality) {
                     navigate("/doctors");
                   }
@@ -226,7 +209,6 @@ const Doctors = () => {
               <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
             </div>
 
-            {/* Availability */}
             <button
               type="button"
               onClick={() =>
@@ -245,7 +227,6 @@ const Doctors = () => {
                 : "Available doctors"}
             </button>
 
-            {/* Clear */}
             {hasActiveFilters && (
               <button
                 type="button"
@@ -258,7 +239,6 @@ const Doctors = () => {
             )}
           </div>
 
-          {/* Active Filters */}
           {hasActiveFilters && (
             <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-gray-100">
 
@@ -314,9 +294,7 @@ const Doctors = () => {
           )}
         </div>
 
-        {/* =====================================================
-            RESULTS HEADER
-        ===================================================== */}
+        {/* Results */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
 
           <div>
@@ -340,9 +318,7 @@ const Doctors = () => {
           )}
         </div>
 
-        {/* =====================================================
-            NO DOCTORS
-        ===================================================== */}
+        {/* No doctor */}
         {displayedDoctors.length === 0 ? (
           <div className="bg-white border border-gray-100 rounded-2xl py-20 px-6 text-center shadow-sm">
 
@@ -370,9 +346,7 @@ const Doctors = () => {
           </div>
         ) : (
 
-          /* ===================================================
-             DOCTOR GRID
-          =================================================== */
+          // Doctor gird
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
             {displayedDoctors.map((item) => (
@@ -381,7 +355,6 @@ const Doctors = () => {
                 className="group bg-white border border-gray-100 rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
 
-                {/* Doctor Image */}
                 <div className="relative bg-primary/5 overflow-hidden">
 
                   <img
@@ -392,7 +365,6 @@ const Doctors = () => {
 
                   <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
 
-                  {/* Availability Badge */}
                   <div className="absolute top-3 left-3">
                     {item.available ? (
                       <span className="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-sm text-emerald-600 px-2.5 py-1 rounded-full text-[11px] font-semibold shadow-sm">
@@ -408,7 +380,6 @@ const Doctors = () => {
                   </div>
                 </div>
 
-                {/* Doctor Info */}
                 <div className="p-4">
 
                   <div className="flex items-start justify-between gap-2">
@@ -432,7 +403,6 @@ const Doctors = () => {
                     </div>
                   </div>
 
-                  {/* Booking */}
                   <div className="mt-4 pt-3 border-t border-gray-100">
 
                     {item.available ? (

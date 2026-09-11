@@ -6,23 +6,16 @@ import { assets } from "../assets/assets";
 
 const ADMIN_NAV_ITEMS = [
   { to: "/admin-dashboard", icon: assets.home_icon, label: "Dashboard" },
-  {
-    to: "/all-appointments",
-    icon: assets.appointment_icon,
-    label: "Appointments",
-  },
+  { to: "/all-appointments",icon: assets.appointment_icon,label: "Appointments"},
   { to: "/add-doctor", icon: assets.add_icon, label: "Add Doctor" },
   { to: "/doctor-list", icon: assets.people_icon, label: "Doctors List" },
   { to: "/revenue",icon: assets.rupee_icon,  label: "Revenue"},
+  { to: "/general-requests",icon: assets.appointment_icon,label: "General Requests"},
 ];
 
 const DOCTOR_NAV_ITEMS = [
   { to: "/doctor-dashboard", icon: assets.home_icon, label: "Dashboard" },
-  {
-    to: "/doctor-appointments",
-    icon: assets.appointment_icon,
-    label: "Appointments",
-  },
+  { to: "/doctor-appointments",icon: assets.appointment_icon,label: "Appointments"},
   { to: "/doctor-profile", icon: assets.people_icon, label: "Profile" },
 ];
 
@@ -36,7 +29,7 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Desktop Sidebar - fixed */}
+      {/* Desktop Sidebar*/}
       <aside className="hidden md:flex flex-col fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-100 shadow-sm z-40">
         <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
           {NAV_ITEMS.map(({ to, icon, label }) => (

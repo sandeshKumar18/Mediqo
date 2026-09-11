@@ -9,6 +9,10 @@ import {
   cancelAppointment,
   updateDoctor,
   adminRevenue,
+  getGeneralRequests,
+  assignGeneralRequestDoctor,
+  startGeneralRequestConsultation,
+  completeGeneralRequestConsultation,
 } from "../controllers/adminController.js";
 
 import upload from "../middlewares/multer.js";
@@ -28,5 +32,9 @@ adminRouter.get("/appointments", authAdmin, appointmentsAdmin);
 adminRouter.get("/dashboard", authAdmin, getDashData);
 adminRouter.put("/update-doctor/:id",authAdmin,upload.single("image"),updateDoctor);
 adminRouter.get("/revenue", authAdmin, adminRevenue);
+adminRouter.get("/general-requests",authAdmin,getGeneralRequests);
+adminRouter.patch("/general-requests/assign", authAdmin, assignGeneralRequestDoctor);
+adminRouter.patch("/general-requests/start",authAdmin,startGeneralRequestConsultation);
+adminRouter.patch("/general-requests/complete", authAdmin, completeGeneralRequestConsultation);
 
 export default adminRouter;
